@@ -38,6 +38,7 @@ function addLink(name, link) {
     // Create a link element
     const anchor = document.createElement("a");
     anchor.href = link;
+    anchor.target = "_blank";  // This ensures the link opens in a new tab
     anchor.textContent = name;
     anchor.classList.add("link-item"); // Adding class for styling
 
@@ -66,6 +67,7 @@ function loadLinks() {
             const li = document.createElement("li");
             const anchor = document.createElement("a");
             anchor.href = link;
+            anchor.target = "_blank";  // This ensures the link opens in a new tab
             anchor.textContent = name;
             anchor.classList.add("link-item"); // Adding class for styling
             li.appendChild(anchor);
