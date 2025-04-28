@@ -118,6 +118,22 @@ main {
     background-color: #218838;
 }
 
+/* Link styles */
+.link-item {
+    color: var(--link-color, #007bff);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+.link-item:hover {
+    color: var(--link-hover-color, #0056b3);
+    text-decoration: underline;
+}
+
 /* Dark Mode Styles */
 body.dark-mode {
     --bg-color: #333;
