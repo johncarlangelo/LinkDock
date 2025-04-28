@@ -1,6 +1,6 @@
 # LinkDock
 
-**LinkDock** is a minimalist, offline web app that helps you organize and quickly access your most-used websites, all in one place. Perfect for users who want a streamlined, clean dashboard to store useful links without relying on browser bookmarks.
+**LinkDock** is a minimalist, static web app that helps you organize and quickly access your most-used websites, all in one place. Perfect for users who want a streamlined, clean dashboard to store useful links without relying on browser bookmarks.
 
 ### Features:
 - **Drag-and-drop** interface for organizing your links
