@@ -32,20 +32,27 @@ addLinkButton.addEventListener("click", () => {
 function addLink(name, link) {
     const category = "category1"; // Default category for now
 
-    // Create list item with the name and link
+    // Create list item with the link and delete button
     const li = document.createElement("li");
+    li.classList.add("link-item");
 
-    // Create a link element
-    const anchor = document.createElement("a");
-    anchor.href = link;
-    anchor.target = "_blank";  // This ensures the link opens in a new tab
-    anchor.textContent = name;
-    anchor.classList.add("link-item"); // Adding class for styling
+    // Create the link element
+    const linkElement = document.createElement("a");
+    linkElement.href = link;
+    linkElement.target = "_blank"; // Open in a new tab
+    linkElement.textContent = name;
+    linkElement.classList.add("link-item-link");
 
-    // Append anchor to list item
-    li.appendChild(anchor);
-    
-    // Add list item to category
+    // Create the delete button (X)
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "❌";
+    deleteButton.classList.add("delete-btn");
+
+    // Append the link and delete button to the list item
+    li.appendChild(linkElement);
+    li.appendChild(deleteButton);
+
+    // Add the list item to the category
     const categoryLinks = document.getElementById(`${category}Links`);
     categoryLinks.appendChild(li);
 
@@ -54,8 +61,24 @@ function addLink(name, link) {
     if (!links[category]) {
         links[category] = [];
     }
-    links[category].push({ name, link });
+    links[category].push({ name: name, url: link });
     localStorage.setItem("links", JSON.stringify(links));
+
+    // Add delete functionality to the button
+    deleteButton.addEventListener("click", () => {
+        // Remove the link from the UI
+        li.remove();
+
+        // Remove the link from Local Storage
+        const links = JSON.parse(localStorage.getItem("links")) || {};
+        if (links[category]) {
+            const index = links[category].findIndex((item) => item.url === link);
+            if (index !== -1) {
+                links[category].splice(index, 1);
+                localStorage.setItem("links", JSON.stringify(links));
+            }
+        }
+    });
 }
 
 // Load links from localStorage
@@ -63,15 +86,44 @@ function loadLinks() {
     const links = JSON.parse(localStorage.getItem("links")) || {};
     for (const category in links) {
         const categoryLinks = document.getElementById(`${category}Links`);
-        links[category].forEach(({ name, link }) => {
+        links[category].forEach(({ name, url }) => {
             const li = document.createElement("li");
+            li.classList.add("link-item");
+
+            // Create the link element
             const anchor = document.createElement("a");
-            anchor.href = link;
-            anchor.target = "_blank";  // This ensures the link opens in a new tab
+            anchor.href = url;
+            anchor.target = "_blank"; // Open in a new tab
             anchor.textContent = name;
-            anchor.classList.add("link-item"); // Adding class for styling
+            anchor.classList.add("link-item-link");
+
+            // Create the delete button (X)
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "❌";
+            deleteButton.classList.add("delete-btn");
+
+            // Append the link and delete button to the list item
             li.appendChild(anchor);
+            li.appendChild(deleteButton);
+
+            // Append the list item to the category
             categoryLinks.appendChild(li);
+
+            // Add delete functionality to the button
+            deleteButton.addEventListener("click", () => {
+                // Remove the link from the UI
+                li.remove();
+
+                // Remove the link from Local Storage
+                const links = JSON.parse(localStorage.getItem("links")) || {};
+                if (links[category]) {
+                    const index = links[category].findIndex((item) => item.url === url);
+                    if (index !== -1) {
+                        links[category].splice(index, 1);
+                        localStorage.setItem("links", JSON.stringify(links));
+                    }
+                }
+            });
         });
     }
 }
