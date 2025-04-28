@@ -3,10 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LinkDock</title>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <title>Document</title>
 </head>
 <body>
+    <header>
+        <h1>LinkDock</h1>
+        <button id="darkModeToggle">🌙 Toggle Dark Mode</button>
+    </header>
+
+    <main>
+        <section id="categories">
+            <div class="category" id="category1">
+                <h2>Category 1</h2>
+                <ul id="category1Links" class="link-list">
+                    <!-- Links will be added here dynamically -->
+                </ul>
+            </div>
+            <!-- More categories can be added here -->
+        </section>
+
+        <section id="addLinkForm">
+            <input type="text" id="linkInput" placeholder="Add a link" />
+            <button id="addLinkButton">Add Link</button>
+        </section>
+    </main>
+
     
 </body>
 </html>
