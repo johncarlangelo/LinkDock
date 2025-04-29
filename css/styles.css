@@ -1,16 +1,18 @@
 :root {
     --bg-color: #fff;
     --text-color: #000;
-  }
-  body {
+}
+
+body {
     background-color: var(--bg-color);
     color: var(--text-color);
-  }
-  .dark-mode {
+}
+
+.dark-mode {
     --bg-color: #333;
     --text-color: #fff;
-  }
-  
+}
+
   /* Global Styles */
 * {
     margin: 0;

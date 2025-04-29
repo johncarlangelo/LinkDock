@@ -15,3 +15,5 @@
 3. Add your most-used links and categorize them.
 4. Organize the links with drag-and-drop.
 5. Toggle between light and dark mode as desired.
+
+### _Work in Progress_
