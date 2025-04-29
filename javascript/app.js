@@ -133,6 +133,7 @@ function loadLinks() {
 // Call loadLinks on page load
 loadLinks();
 
+// Function to load category titles from localStorage
 function loadCategoryTitles() {
     for (const categoryId in categoryTitles) {
         const titleElement = document.querySelector(`#${categoryId} .category-title`);
@@ -143,40 +144,48 @@ function loadCategoryTitles() {
 }
 loadCategoryTitles();
 
-document.querySelectorAll(".rename-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-        const titleSpan = button.previousElementSibling;
-        const currentText = titleSpan.textContent;
+// Function to add double-click functionality for renaming category title
+function enableCategoryTitleRenaming() {
+    document.querySelectorAll(".category-title").forEach((titleElement) => {
+        titleElement.addEventListener("dblclick", () => {
+            const currentText = titleElement.textContent;
 
-        // Create input field
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = currentText;
-        input.classList.add("category-title-input");
+            // Create input field
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = currentText;
+            input.classList.add("category-title-input");
 
-        // Replace the span with the input
-        titleSpan.replaceWith(input);
-        input.focus();
+            // Replace the h2 (or span) with the input field
+            titleElement.replaceWith(input);
+            input.focus();
 
-        // Save on Enter or when focus is lost
-        function saveTitle() {
-            const newTitle = input.value.trim() || currentText;
-            const newSpan = document.createElement("span");
-            newSpan.textContent = newTitle;
-            newSpan.classList.add("category-title");
-        
-            // Save to localStorage
-            const categoryId = button.closest(".category").id;
-            categoryTitles[categoryId] = newTitle;
-            localStorage.setItem(CATEGORY_TITLES_KEY, JSON.stringify(categoryTitles));
-        
-            input.replaceWith(newSpan);
-        }
+            // Save title when pressing Enter or when losing focus
+            function saveTitle() {
+                const newTitle = input.value.trim() || currentText;
+                const newH2 = document.createElement("h2");
+                newH2.textContent = newTitle;
+                newH2.classList.add("category-title");
 
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") saveTitle();
+                // Save to localStorage
+                const categoryId = input.closest(".category").id;
+                categoryTitles[categoryId] = newTitle;
+                localStorage.setItem(CATEGORY_TITLES_KEY, JSON.stringify(categoryTitles));
+
+                input.replaceWith(newH2);
+
+                // Re-enable renaming after saving
+                enableCategoryTitleRenaming();
+            }
+
+            input.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") saveTitle();
+            });
+
+            input.addEventListener("blur", saveTitle);
         });
-
-        input.addEventListener("blur", saveTitle);
     });
-});
+}
+
+// Initial call to enable category title renaming
+enableCategoryTitleRenaming();

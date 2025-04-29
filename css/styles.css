@@ -19,6 +19,7 @@ body.dark-mode {
 
 .category-title {
     color: var(--category-title-color);
+    cursor: pointer;
 }
 
 .category-title-input {
