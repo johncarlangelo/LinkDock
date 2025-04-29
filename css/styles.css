@@ -1,16 +1,28 @@
 :root {
     --bg-color: #fff;
     --text-color: #000;
+    --category-title-color-light: #333; /* Dark color for light mode */
+    --category-title-color-dark: #fff;  /* White color for dark mode */
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
+    --category-title-color: var(--category-title-color-light); /* Default color for light mode */
 }
 
-.dark-mode {
+body.dark-mode {
     --bg-color: #333;
     --text-color: #fff;
+    --category-title-color: var(--category-title-color-dark); /* Color for dark mode */
+}
+
+.category-title {
+    color: var(--category-title-color);
+}
+
+.category-title-input {
+    color: var(--category-title-color);
 }
 
   /* Global Styles */
@@ -149,6 +161,36 @@ main {
 
 .delete-btn:hover {
     color: #d9534f;
+}
+
+/* rename button */
+.rename-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 2px;
+    color: gray;
+    padding: 2.5px;
+}
+
+.rename-btn:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.category-title-input {
+    width: 100%;
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: inherit;
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: transparent;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    outline: none;
+    font-weight: bold; 
 }
 
 /* Dark Mode Styles */

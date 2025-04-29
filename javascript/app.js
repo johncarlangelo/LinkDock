@@ -4,6 +4,8 @@ const addLinkButton = document.getElementById("addLinkButton");
 const nameInput = document.getElementById("nameInput");
 const linkInput = document.getElementById("linkInput");
 const categories = document.getElementById("categories");
+const CATEGORY_TITLES_KEY = "categoryTitles";
+let categoryTitles = JSON.parse(localStorage.getItem(CATEGORY_TITLES_KEY)) || {};
 
 // Dark Mode Toggle
 darkModeToggle.addEventListener("click", () => {
@@ -130,3 +132,51 @@ function loadLinks() {
 
 // Call loadLinks on page load
 loadLinks();
+
+function loadCategoryTitles() {
+    for (const categoryId in categoryTitles) {
+        const titleElement = document.querySelector(`#${categoryId} .category-title`);
+        if (titleElement) {
+            titleElement.textContent = categoryTitles[categoryId];
+        }
+    }
+}
+loadCategoryTitles();
+
+document.querySelectorAll(".rename-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+        const titleSpan = button.previousElementSibling;
+        const currentText = titleSpan.textContent;
+
+        // Create input field
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = currentText;
+        input.classList.add("category-title-input");
+
+        // Replace the span with the input
+        titleSpan.replaceWith(input);
+        input.focus();
+
+        // Save on Enter or when focus is lost
+        function saveTitle() {
+            const newTitle = input.value.trim() || currentText;
+            const newSpan = document.createElement("span");
+            newSpan.textContent = newTitle;
+            newSpan.classList.add("category-title");
+        
+            // Save to localStorage
+            const categoryId = button.closest(".category").id;
+            categoryTitles[categoryId] = newTitle;
+            localStorage.setItem(CATEGORY_TITLES_KEY, JSON.stringify(categoryTitles));
+        
+            input.replaceWith(newSpan);
+        }
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") saveTitle();
+        });
+
+        input.addEventListener("blur", saveTitle);
+    });
+});

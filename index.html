@@ -7,6 +7,7 @@
     <title>LinkDock</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -16,14 +17,17 @@
 
     <main>
         <section id="addLinkForm">
-            <input type="text" id="nameInput" placeholder="Enter link name" />
-            <input type="url" id="linkInput" placeholder="Enter link URL" />
+            <input type="text" id="nameInput" placeholder="Enter link name" autocomplete="off" />
+            <input type="url" id="linkInput" placeholder="Enter link URL" autocomplete="off" />
             <button id="addLinkButton">Add Link</button>
         </section>
 
         <section id="categories">
             <div class="category" id="category1">
-                <h2>Category 1</h2>
+                <h2>
+                    <span class="category-title">Category 1</span>
+                    <button class="rename-btn">📝</button>
+                </h2>
                 <ul id="category1Links" class="link-list"></ul>
             </div>
         </section>
