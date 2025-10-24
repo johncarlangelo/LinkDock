@@ -1,5 +1,7 @@
 # LinkDock
 
+### _UPCOMING CHANGES: SWITCH TO REACT + TW_
+
 **LinkDock** is a minimalist, static web app that helps you organize and quickly access your most-used websites, all in one place. Perfect for users who want a streamlined, clean dashboard to store useful links without relying on browser bookmarks.
 
 ### Features:
