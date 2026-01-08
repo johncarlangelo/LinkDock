@@ -1,58 +1,211 @@
-# LinkDock
+# LinkDock 🔗
 
-**LinkDock** is a minimalist, customizable bookmark manager built with **React**. Organize links in
-resizable categories, theme your interface, share your catalogues, and export/import your
-bookmarks—all **without a backend**.  
+A beautiful, fully client-side bookmark manager with drag-and-drop categories, custom themes, and sharing capabilities. No backend required!
 
----
+![LinkDock](https://img.shields.io/badge/React-19.2-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ## ✨ Features
 
-### Core Identity
-- Set a **username** on first visit.
-- Shows personalized greetings and ownership on shared catalogues.
+### 🎯 Core Features
+- **Personal Identity**: Set your username on first visit for personalized welcome messages
+- **Smart Categories**: Create, rename, delete, and reorder categories with drag & drop
+- **Resizable Layout**: Drag to resize categories with automatic scrollbars for overflow
+- **Auto Favicons**: Links automatically fetch and display website favicons
+- **Persistent Storage**: Everything saved locally in your browser (localStorage)
 
-### Categories
-- Add, delete, **rename** (click or double-click), **resize**, and **reorder** via drag & drop.
-- Scrollable content for categories with many links.
-- Lock position or resizing to prevent accidental changes.
-- Saved automatically in **localStorage**.
+### 🎨 Theme System (Monkeytype-Inspired)
+- **Default Themes**: Light and Dark mode
+- **Custom Themes**: Create unlimited custom themes with:
+  - Primary/Secondary colors
+  - Background/Surface colors
+  - Text colors
+  - Real-time preview with CSS variables
+- **Color Picker**: Intuitive color wheel + hex input
+- **Theme Management**: Save, switch, and delete custom themes
 
-### Links
-- Add links under categories.
-- **Fetches favicons** automatically.
-- Opens links in a new tab.
-- Empty categories display a placeholder image.
-- Saved in **localStorage**.
+### 📤 Export & Import
+- **JSON Export**: Download your entire catalogue as a JSON file
+- **Smart Import**: Import with duplicate detection
+- **Merge Strategies**: Replace, Skip, or Merge duplicate categories
 
-### Theme System
-- Preset **Light** & **Dark** modes.
-- Customizable themes via **color picker & hex input**.
-- Real-time updates with **CSS variables**.
-- Save multiple themes and persist preference in **localStorage**.
-- Smooth transitions using **Framer Motion**.
+### 🔗 Sharing
+- **One-Click Sharing**: Generate shareable links with encoded catalogue data
+- **Read-Only View**: Shared catalogues display owner's username
+- **Easy Return**: Switch back to your own LinkDock with one click
 
-### Export & Import
-- Export catalogue as JSON.
-- Import JSON with **duplicate detection** (replace, skip, or merge).
+## 🚀 Getting Started
 
-### Sharing
-- Share your catalogue via a **read-only link**.
-- Displays `"You are now viewing <username>'s LinkDock"`.
-- Return to your own catalogue with a dedicated button.
+### Prerequisites
+- Node.js 16+ and npm
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/johncarlangelo/LinkDock.git
+   cd LinkDock
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser**
+   ```
+   http://localhost:5173
+   ```
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The build output will be in the `dist/` folder, ready for deployment.
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework**: React 19.2
+- **Build Tool**: Vite
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Drag & Drop**: GridStack.js (planned)
+- **Styling**: Vanilla CSS + CSS Variables
+- **State Management**: React Hooks + localStorage
+
+## 📁 Project Structure
+
+```
+LinkDock/
+├── src/
+│   ├── components/
+│   │   ├── Header.jsx          # Main header with actions
+│   │   ├── UsernamePrompt.jsx  # First-visit username input
+│   │   ├── ThemePicker.jsx     # Theme management panel
+│   │   └── *.css               # Component styles
+│   ├── hooks/
+│   │   └── useLocalStorage.js  # localStorage sync hook
+│   ├── utils/
+│   │   ├── theme.js            # Theme management
+│   │   ├── favicon.js          # Favicon fetching
+│   │   ├── share.js            # Share link generation
+│   │   └── export.js           # Export/Import logic
+│   ├── styles/
+│   │   └── globals.css         # Global styles & CSS variables
+│   ├── App.jsx                 # Main app component
+│   └── main.jsx                # React entry point
+├── public/                     # Static assets
+├── index.html
+├── vite.config.js
+└── package.json
+```
+
+## 🎯 Roadmap (MVP Features)
+
+### Phase 1: Foundation ✅
+- [x] Project setup with React + Vite
+- [x] Username prompt on first visit
+- [x] Basic theme system (Light/Dark)
+- [x] Custom theme creator
+- [x] Export/Import functionality
+- [x] Share link generation
+- [x] localStorage persistence
+
+### Phase 2: Categories & Links (Next)
+- [ ] Add/Delete categories
+- [ ] Rename categories (double-click)
+- [ ] Add links to categories
+- [ ] Fetch and display favicons
+- [ ] Open links in new tab
+- [ ] Empty category placeholders
+
+### Phase 3: Drag & Drop
+- [ ] Drag to reorder categories
+- [ ] Snap-to-grid behavior
+- [ ] Swap on collision
+- [ ] Drag constraints
+- [ ] Lock position/size options
+- [ ] Smooth animations
+
+### Phase 4: Resizing
+- [ ] Drag to resize categories
+- [ ] Scrollbars for overflow
+- [ ] Manual width/height input
+- [ ] Maintain aspect ratio option
+
+### Phase 5: Polish
+- [ ] Bento grid layout optimization
+- [ ] Mobile responsive design
+- [ ] Keyboard shortcuts
+- [ ] Search functionality
+- [ ] Category templates
+
+## 🌐 Deployment
+
+LinkDock is 100% client-side and can be deployed for **free** on:
+
+### Vercel (Recommended)
+```bash
+npm install -g vercel
+vercel
+```
+
+### Netlify
+```bash
+npm install -g netlify-cli
+netlify deploy --prod
+```
+
+### GitHub Pages
+```bash
+npm run build
+# Push dist/ folder to gh-pages branch
+```
+
+## 💾 Data Storage
+
+All data is stored locally in your browser using `localStorage`:
+- `linkdock-username`: Your username
+- `linkdock-categories`: All categories and links
+- `linkdock-current-theme`: Active theme
+- `linkdock-custom-themes`: Your custom themes
+
+**Note**: Clearing browser data will erase your LinkDock. Use Export to backup!
+
+## 🔗 Sharing How It Works
+
+1. Your catalogue data is encoded to Base64
+2. Encoded data is appended to URL as query parameter
+3. Share the generated link with anyone
+4. Recipients see a read-only view of your LinkDock
+5. No backend or database needed!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+MIT License - feel free to use this project for personal or commercial purposes.
+
+## 👤 Author
+
+**John Carl Angelo**
+- GitHub: [@johncarlangelo](https://github.com/johncarlangelo)
+
+## 🙏 Acknowledgments
+
+- Design inspiration: [Monkeytype](https://monkeytype.com) (theme system)
+- Functionality reference: [GridStack.js](https://gridstackjs.com)
+- Icons: [Lucide](https://lucide.dev)
 
 ---
 
-## 🛠 Tech Stack
-
-- **Framework:** React  
-- **Styling:** Vanilla CSS + CSS Variables  
-- **Animations:** Framer Motion  
-- **Drag & Drop / Resizing:** GridStack.js + Framer Motion  
-- **Theme Picker:** `react-color` (color wheel + hex input)  
-- **State Management:** React Hooks + LocalStorage  
-- **Favicon Handling:** Google Favicon API  
-- **Deployment:** GitHub Pages / Vercel (Free)
-
-
-### _⚠Work in Progress⚠_
+**Built with ❤️ using React + Vite**
