@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react';
 import UsernamePrompt from './components/UsernamePrompt';
 import Header from './components/Header';
 import ThemePicker from './components/ThemePicker';
+import Category from './components/Category';
+import AddCategoryModal from './components/AddCategoryModal';
+import AddLinkModal from './components/AddLinkModal';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { defaultThemes, applyTheme, createCustomTheme } from './utils/theme';
 import { exportCatalogue, importCatalogue, mergeData, detectDuplicates } from './utils/export';
 import { generateShareLink, getSharedCatalogueFromUrl } from './utils/share';
+import { Plus } from 'lucide-react';
 import './styles/globals.css';
 import './App.css';
 
@@ -24,6 +28,11 @@ function App() {
   // Sharing state
   const [isViewingShared, setIsViewingShared] = useState(false);
   const [sharedData, setSharedData] = useState(null);
+
+  // Modal state
+  const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
+  const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   // Apply theme on mount and when theme changes
   useEffect(() => {
@@ -130,6 +139,68 @@ function App() {
     window.history.pushState({}, '', window.location.pathname);
   };
 
+  // Category management
+  const handleAddCategory = (name) => {
+    const newCategory = {
+      id: Date.now().toString(),
+      name,
+      links: [],
+      order: categories.length,
+      createdAt: new Date().toISOString()
+    };
+    setCategories([...categories, newCategory]);
+  };
+
+  const handleRenameCategory = (id, newName) => {
+    setCategories(categories.map(cat => 
+      cat.id === id ? { ...cat, name: newName } : cat
+    ));
+  };
+
+  const handleDeleteCategory = (id) => {
+    setCategories(categories.filter(cat => cat.id !== id));
+  };
+
+  // Link management
+  const handleAddLink = (categoryId, linkData) => {
+    setCategories(categories.map(cat => {
+      if (cat.id === categoryId) {
+        return {
+          ...cat,
+          links: [...(cat.links || []), {
+            id: Date.now().toString(),
+            ...linkData,
+            createdAt: new Date().toISOString()
+          }]
+        };
+      }
+      return cat;
+    }));
+  };
+
+  const handleDeleteLink = (categoryId, linkId) => {
+    setCategories(categories.map(cat => {
+      if (cat.id === categoryId) {
+        return {
+          ...cat,
+          links: cat.links.filter(link => link.id !== linkId)
+        };
+      }
+      return cat;
+    }));
+  };
+
+  const handleOpenAddLinkModal = (categoryId) => {
+    setActiveCategoryId(categoryId);
+    setIsAddLinkModalOpen(true);
+  };
+
+  const handleSaveLink = (linkData) => {
+    if (activeCategoryId) {
+      handleAddLink(activeCategoryId, linkData);
+    }
+  };
+
   // Show username prompt if no username is set
   if (!username) {
     return <UsernamePrompt onUsernameSet={handleUsernameSet} />;
@@ -137,6 +208,7 @@ function App() {
 
   const displayCategories = isViewingShared ? sharedData?.categories || [] : categories;
   const displayUsername = isViewingShared ? sharedData?.username : username;
+  const activeCategory = categories.find(cat => cat.id === activeCategoryId);
 
   return (
     <div className="app">
@@ -152,25 +224,47 @@ function App() {
       />
 
       <main className="main-content">
+        {!isViewingShared && (
+          <div className="add-category-section">
+            <button 
+              className="add-category-btn"
+              onClick={() => setIsAddCategoryModalOpen(true)}
+            >
+              <Plus size={20} />
+              Add Category
+            </button>
+          </div>
+        )}
+
         <div className="categories-grid">
           {displayCategories.length === 0 ? (
             <div className="empty-state">
-              <h2>No categories yet</h2>
-              <p>Start by adding your first category</p>
+              <div className="empty-icon">🚀</div>
+              <h2>Welcome to LinkDock!</h2>
+              <p>Start by creating your first category</p>
+              {!isViewingShared && (
+                <button 
+                  className="empty-add-btn"
+                  onClick={() => setIsAddCategoryModalOpen(true)}
+                >
+                  <Plus size={20} />
+                  Create Category
+                </button>
+              )}
             </div>
           ) : (
-            <div className="temp-grid">
-              {displayCategories.map((category) => (
-                <div key={category.id} className="temp-category">
-                  <h3>{category.name}</h3>
-                  <div className="temp-links">
-                    {category.links?.map((link, i) => (
-                      <div key={i}>{link.name}</div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            displayCategories.map((category) => (
+              <Category
+                key={category.id}
+                id={category.id}
+                name={category.name}
+                links={category.links || []}
+                onRename={handleRenameCategory}
+                onDelete={handleDeleteCategory}
+                onAddLink={handleOpenAddLinkModal}
+                onDeleteLink={handleDeleteLink}
+              />
+            ))
           )}
         </div>
       </main>
@@ -183,6 +277,22 @@ function App() {
         customThemes={customThemes}
         onSaveCustomTheme={handleSaveCustomTheme}
         onDeleteCustomTheme={handleDeleteCustomTheme}
+      />
+
+      <AddCategoryModal
+        isOpen={isAddCategoryModalOpen}
+        onClose={() => setIsAddCategoryModalOpen(false)}
+        onSave={handleAddCategory}
+      />
+
+      <AddLinkModal
+        isOpen={isAddLinkModalOpen}
+        onClose={() => {
+          setIsAddLinkModalOpen(false);
+          setActiveCategoryId(null);
+        }}
+        onSave={handleSaveLink}
+        categoryName={activeCategory?.name || ''}
       />
     </div>
   );

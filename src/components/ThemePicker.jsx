@@ -26,6 +26,7 @@ export default function ThemePicker({
     textSecondary: '#6b7280',
     border: '#e5e7eb',
     hover: '#f9fafb',
+    hoverText: '#1f2937',
   });
   const [previewTheme, setPreviewTheme] = useState(null);
 
@@ -75,6 +76,7 @@ export default function ThemePicker({
         textSecondary: '#6b7280',
         border: '#e5e7eb',
         hover: '#f9fafb',
+        hoverText: '#1f2937',
       });
     }
   };
@@ -83,7 +85,11 @@ export default function ThemePicker({
     setIsEditingCustom(true);
     setEditingThemeKey(themeKey);
     setCustomName(theme.name);
-    setCustomColors(theme.colors);
+    // Ensure hoverText exists (for themes created before this feature)
+    setCustomColors({
+      ...theme.colors,
+      hoverText: theme.colors.hoverText || theme.colors.text || '#1f2937'
+    });
     setIsCreatingCustom(false);
   };
 
@@ -105,6 +111,7 @@ export default function ThemePicker({
       textSecondary: '#6b7280',
       border: '#e5e7eb',
       hover: '#f9fafb',
+      hoverText: '#1f2937',
     });
   };
 

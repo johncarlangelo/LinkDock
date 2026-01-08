@@ -41,11 +41,12 @@
   justify-content: center;
   border-radius: var(--radius-md);
   color: var(--color-text);
-  transition: background var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .close-btn:hover {
   background: var(--color-hover);
+  color: var(--color-hover-text);
 }
 
 .theme-picker-content {
@@ -298,11 +299,12 @@
 
 .custom-theme-actions button:first-child {
   background: var(--color-hover);
-  color: var(--color-text);
+  color: var(--color-hover-text);
 }
 
 .custom-theme-actions button:first-child:hover {
   background: var(--color-border);
+  color: var(--color-hover-text);
 }
 
 .save-btn {

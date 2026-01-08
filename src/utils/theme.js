@@ -10,6 +10,7 @@ export const defaultThemes = {
       textSecondary: '#6b7280',
       border: '#e5e7eb',
       hover: '#f9fafb',
+      hoverText: '#1f2937',
     }
   },
   dark: {
@@ -23,6 +24,7 @@ export const defaultThemes = {
       textSecondary: '#94a3b8',
       border: '#334155',
       hover: '#293548',
+      hoverText: '#f1f5f9',
     }
   }
 };
@@ -34,7 +36,9 @@ export function applyTheme(theme) {
   const root = document.documentElement;
   
   Object.entries(theme.colors).forEach(([key, value]) => {
-    root.style.setProperty(`--color-${key}`, value);
+    // Convert camelCase to kebab-case (e.g., hoverText -> hover-text)
+    const kebabKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+    root.style.setProperty(`--color-${kebabKey}`, value);
   });
 }
 
@@ -53,6 +57,7 @@ export function createCustomTheme(name, colors) {
       textSecondary: colors.textSecondary || '#6b7280',
       border: colors.border || '#e5e7eb',
       hover: colors.hover || '#f9fafb',
+      hoverText: colors.hoverText || colors.text || '#1f2937',
     },
     isCustom: true
   };
