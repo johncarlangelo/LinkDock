@@ -209,3 +209,6 @@ MIT License - feel free to use this project for personal or commercial purposes.
 ---
 
 **Built with ❤️ using React + Vite**
+
+<!-- dont remove or edit after this line -->
+*© Hermanos 2026 - For Hermanos. By Hermanos*
