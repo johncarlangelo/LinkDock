@@ -10,7 +10,8 @@ A beautiful, fully client-side bookmark manager with drag-and-drop categories, c
 ### 🎯 Core Features
 - **Personal Identity**: Set your username on first visit for personalized welcome messages
 - **Smart Categories**: Create, rename, delete, and reorder categories with drag & drop
-- **Resizable Layout**: Drag to resize categories with automatic scrollbars for overflow
+- **Smooth Animations**: Buttery smooth drag & drop with @dnd-kit and toast notifications
+- **Resizable Layout**: Resize categories (coming in Phase 4)
 - **Auto Favicons**: Links automatically fetch and display website favicons
 - **Persistent Storage**: Everything saved locally in your browser (localStorage)
 
@@ -76,7 +77,8 @@ The build output will be in the `dist/` folder, ready for deployment.
 - **Build Tool**: Vite
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
-- **Drag & Drop**: GridStack.js (planned)
+- **Drag & Drop**: @dnd-kit (sortable, core, utilities)
+- **Notifications**: react-hot-toast
 - **Styling**: Vanilla CSS + CSS Variables
 - **State Management**: React Hooks + localStorage
 
@@ -118,27 +120,28 @@ LinkDock/
 - [x] Share link generation
 - [x] localStorage persistence
 
-### Phase 2: Categories & Links (Next)
-- [ ] Add/Delete categories
-- [ ] Rename categories (double-click)
-- [ ] Add links to categories
-- [ ] Fetch and display favicons
-- [ ] Open links in new tab
-- [ ] Empty category placeholders
+### Phase 2: Categories & Links ✅
+- [x] Add/Delete categories
+- [x] Rename categories (double-click)
+- [x] Add links to categories
+- [x] Fetch and display favicons
+- [x] Open links in new tab
+- [x] Empty category placeholders
 
-### Phase 3: Drag & Drop
-- [ ] Drag to reorder categories
-- [ ] Snap-to-grid behavior
-- [ ] Swap on collision
-- [ ] Drag constraints
-- [ ] Lock position/size options
-- [ ] Smooth animations
+### Phase 3: Drag & Drop ✅
+- [x] Drag to reorder categories
+- [x] Smooth DragOverlay animations
+- [x] Toast notifications for deletions
+- [x] Drag constrained to grip icon
+- [x] 150ms snap-back animation
+- [x] Tilted drag preview (-8deg rotation)
 
-### Phase 4: Resizing
+### Phase 4: Resizing (Next)
 - [ ] Drag to resize categories
 - [ ] Scrollbars for overflow
 - [ ] Manual width/height input
 - [ ] Maintain aspect ratio option
+- [ ] Min/max size constraints
 
 ### Phase 5: Polish
 - [ ] Bento grid layout optimization
@@ -203,7 +206,7 @@ MIT License - feel free to use this project for personal or commercial purposes.
 ## 🙏 Acknowledgments
 
 - Design inspiration: [Monkeytype](https://monkeytype.com) (theme system)
-- Functionality reference: [GridStack.js](https://gridstackjs.com)
+- Drag & Drop: [@dnd-kit](https://dndkit.com) (smooth drag & drop library)
 - Icons: [Lucide](https://lucide.dev)
 
 ---

@@ -43,9 +43,6 @@
 }
 
 .categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: var(--spacing-lg);
   min-height: 400px;
 }
 

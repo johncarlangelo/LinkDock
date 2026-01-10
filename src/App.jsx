@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import UsernamePrompt from './components/UsernamePrompt';
 import Header from './components/Header';
 import ThemePicker from './components/ThemePicker';
 import Category from './components/Category';
+import GridLayout from './components/GridLayout';
+import SortableCategory from './components/SortableCategory';
 import AddCategoryModal from './components/AddCategoryModal';
 import AddLinkModal from './components/AddLinkModal';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -157,8 +160,63 @@ function App() {
     ));
   };
 
-  const handleDeleteCategory = (id) => {
-    setCategories(categories.filter(cat => cat.id !== id));
+  const handleReorderCategories = (newCategories) => {
+    setCategories(newCategories);
+  };
+
+  const handleDeleteCategory = (id, categoryName) => {
+    // Show toast with confirmation buttons
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div>
+          <strong>Delete "{categoryName}"?</strong>
+          <p style={{ margin: '4px 0 0 0', fontSize: '0.9em', opacity: 0.8 }}>
+            This will delete the category and all its links.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+            }}
+            style={{
+              padding: '6px 16px',
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              color: 'var(--color-text)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.9em',
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              setCategories(categories.filter(cat => cat.id !== id));
+              toast.dismiss(t.id);
+              toast.success(`Deleted "${categoryName}"`);
+            }}
+            style={{
+              padding: '6px 16px',
+              border: 'none',
+              background: '#ef4444',
+              color: 'white',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.9em',
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), {
+      duration: 6000,
+      style: {
+        minWidth: '320px',
+      },
+    });
   };
 
   // Link management
@@ -212,6 +270,26 @@ function App() {
 
   return (
     <div className="app">
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: 'var(--color-surface)',
+            color: 'var(--color-text)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '8px',
+            padding: '16px',
+          },
+          success: {
+            iconTheme: {
+              primary: 'var(--color-primary)',
+              secondary: 'white',
+            },
+          },
+        }}
+      />
+      
       <Header
         username={displayUsername}
         onExport={handleExport}
@@ -253,18 +331,31 @@ function App() {
               )}
             </div>
           ) : (
-            displayCategories.map((category) => (
-              <Category
-                key={category.id}
-                id={category.id}
-                name={category.name}
-                links={category.links || []}
-                onRename={handleRenameCategory}
-                onDelete={handleDeleteCategory}
-                onAddLink={handleOpenAddLinkModal}
-                onDeleteLink={handleDeleteLink}
-              />
-            ))
+            <GridLayout 
+              categories={displayCategories} 
+              onReorder={handleReorderCategories}
+              onRename={handleRenameCategory}
+              onDelete={handleDeleteCategory}
+              onAddLink={handleOpenAddLinkModal}
+              onDeleteLink={handleDeleteLink}
+            >
+              {displayCategories.map((category) => (
+                <SortableCategory key={category.id} id={category.id}>
+                  {({ dragHandleProps }) => (
+                    <Category
+                      id={category.id}
+                      name={category.name}
+                      links={category.links || []}
+                      onRename={handleRenameCategory}
+                      onDelete={handleDeleteCategory}
+                      onAddLink={handleOpenAddLinkModal}
+                      onDeleteLink={handleDeleteLink}
+                      dragHandleProps={dragHandleProps}
+                    />
+                  )}
+                </SortableCategory>
+              ))}
+            </GridLayout>
           )}
         </div>
       </main>

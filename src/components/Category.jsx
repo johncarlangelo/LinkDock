@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Trash2, GripVertical } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from './Link';
+import ResizeIcon from './ResizeIcon';
 import './Category.css';
 
 export default function Category({
@@ -12,7 +13,8 @@ export default function Category({
   onDelete,
   onAddLink,
   onDeleteLink,
-  isLocked = false
+  isLocked = false,
+  dragHandleProps
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(name);
@@ -42,9 +44,8 @@ export default function Category({
   };
 
   const handleDeleteCategory = () => {
-    if (window.confirm(`Delete "${name}" category and all its links?`)) {
-      onDelete(id);
-    }
+    // Pass to parent to handle with toast
+    onDelete(id, name);
   };
 
   return (
@@ -58,7 +59,9 @@ export default function Category({
     >
       <div className="category-header">
         <div className="category-title-section">
-          <GripVertical size={16} className="drag-handle" />
+          <div {...dragHandleProps} style={{ display: 'flex', cursor: 'grab' }}>
+            <GripVertical size={16} className="drag-handle" />
+          </div>
           {isEditing ? (
             <input
               type="text"
@@ -81,22 +84,24 @@ export default function Category({
           )}
         </div>
         
-        <div className="category-actions">
-          <button 
-            onClick={() => onAddLink(id)}
-            className="action-btn add-btn"
-            title="Add link"
-          >
-            <Plus size={16} />
-          </button>
-          <button 
-            onClick={handleDeleteCategory}
-            className="action-btn delete-btn"
-            title="Delete category"
-          >
-            <Trash2 size={16} />
-          </button>
-        </div>
+        {!isEditing && (
+          <div className="category-actions">
+            <button 
+              onClick={() => onAddLink(id)}
+              className="action-btn add-btn"
+              title="Add link"
+            >
+              <Plus size={16} />
+            </button>
+            <button 
+              onClick={handleDeleteCategory}
+              className="action-btn delete-btn"
+              title="Delete category"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="category-content">
@@ -124,6 +129,10 @@ export default function Category({
             ))}
           </div>
         )}
+      </div>
+      
+      <div className="resize-indicator">
+        <ResizeIcon size={14} />
       </div>
     </motion.div>
   );
